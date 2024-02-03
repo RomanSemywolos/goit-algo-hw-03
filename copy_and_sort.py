@@ -22,7 +22,7 @@ def copy_files(src, dst):
 
 def main():
 
-    # В консоль: copy_and_sort.py source destination
+    # В консоль: python copy_and_sort.py source destination
 
     if len(sys.argv) < 2:
         print(f"No arguments passed")
