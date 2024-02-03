@@ -1,7 +1,6 @@
 import os
 import shutil
 import sys
-import time
 
 
 def copy_files(src, dst):
@@ -21,39 +20,42 @@ def copy_files(src, dst):
                 shutil.copy(src_path, dest_dir)
 
 
-def main(src_dir, dst_dir):
+def main():
+
+    # В консоль: copy_and_sort.py source destination
+
+    if len(sys.argv) < 2:
+        print(f"No arguments passed")
+        sys.exit(1)
+
+    src_dir = sys.argv[1]
+
+    # Створення вихідної директорії, якщо вона вказана, або за замавчуванням
+
+    if len(sys.argv) > 2:
+        dst_dir = sys.argv[2]
+    else: dst_dir = "dist"
+
+    # Перевірка існування вихідної директорії
+    if os.path.exists(src_dir) == False:
+        print(f"Directory {src_dir} does not exist.")
+        sys.exit(1)
+
+    # Cтворення директорії призначення, якщо її не існує
+    try:
+        os.makedirs(dst_dir, exist_ok=True)
+    except Exception as ex:
+        print(f"A default directory will be created")
  
     # Копіювання файлів
     try:
         copy_files(src_dir, dst_dir)
     except Exception as ex:
         print(f"Copy error: {ex}")
-        time.sleep(20)
         sys.exit(1)
 
     print(f"Files successfully copied to {os.path.abspath(dst_dir)}")
-    time.sleep(20)
 
 
 if __name__ == "__main__":
-
-    # Задаємо і перевіряємо вихідну директорію
-
-    is_src_true = False
-
-    while is_src_true == False:
-        src_dir = input("The path of the source directory: ")
-        if os.path.exists(src_dir):
-            is_src_true = True
-        else: print(f"Directory {src_dir} does not exist.")
-            
-    dst_dir = input("Destination directory path: ")
-    # Cпроба створення директорії призначення, якщо її не існує
-    try:
-        os.makedirs(dst_dir, exist_ok=True)
-    except Exception as ex:
-        print(f"A default directory will be created")
-    # Передаємо значення за замовчуванням
-        dst_dir = "dist"
-
-    main(src_dir, dst_dir)
+    main()
